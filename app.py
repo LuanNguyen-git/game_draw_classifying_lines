@@ -115,7 +115,7 @@ def manage_game(relayout, n_next, n_reset, state, data, svm_info):
     triggered = ctx.triggered_id    
     if triggered == 'reset-game-btn':
         state = {'score': 0.0, 'round': 1, 'attempts': 0, 'best_acc_in_round': 0.0, 'history': [], 'game_over': False}
-        return state, "Điểm: 0.0 | Vòng: 1/10", False, "", go.Figure(), {'display': 'none'}
+        return state, "Điểm: 0.0 | Vòng: 1/20", False, "", go.Figure(), {'display': 'none'}
     if state.get('game_over'):
         return dash.no_update
     if triggered == 'scatter-plot' and relayout and 'shapes' in relayout:
@@ -135,7 +135,7 @@ def manage_game(relayout, n_next, n_reset, state, data, svm_info):
         round_score = (state['best_acc_in_round'] - svm_info['acc']) * 100
         state['score'] += round_score
         state['history'].append(round_score)       
-        if state['score'] < 0 or state['round'] >= 10:
+        if state['score'] < 0 or state['round'] >= 20:
             state['game_over'] = True
             final_msg = f"KẾT THÚC! Tổng điểm: {state['score']:.1f}. Xem biểu đồ bên dưới."
             fig_bar = go.Figure(go.Bar(
@@ -149,7 +149,7 @@ def manage_game(relayout, n_next, n_reset, state, data, svm_info):
         state['round'] += 1
         state['attempts'] = 0
         state['best_acc_in_round'] = 0.0
-    msg = f"Điểm: {state['score']:.1f} | Vòng: {state['round']}/10 | Thử: {state['attempts']}/3"
+    msg = f"Điểm: {state['score']:.1f} | Vòng: {state['round']}/20 | Thử: {state['attempts']}/3"
     return state, msg, False, "", dash.no_update, {'display': 'none'}
 @app.callback(
     [Output('scatter-plot', 'figure'),
